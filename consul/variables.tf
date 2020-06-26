@@ -1,5 +1,5 @@
 variable "ami_id" {
-  description = "The ID of the AMI to run in the cluster"
+  description = "The ID of the AMI to run in the cluster. Change this to your AMI ID."
   type        = string
   default     = "ami-0315102b129befb93"
 }
@@ -7,7 +7,7 @@ variable "ami_id" {
 variable "cluster_name" {
   description = "What to name the Consul cluster and all of its associated resources"
   type        = string
-  default     = "consul-example"
+  default     = "consul"
 }
 
 variable "num_servers" {
