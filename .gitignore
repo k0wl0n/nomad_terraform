@@ -1,3 +1,4 @@
 *.tfstate
 .terraform
 terraform.tfstate.backup
+consul/.terraform.tfstate.lock.info
