@@ -10,8 +10,8 @@ readonly VAULT_TLS_KEY_FILE="/opt/vault/tls/vault.key.pem"
 
 /opt/consul/bin/run-consul --client --cluster-tag-key "${consul_cluster_tag_key}" --cluster-tag-value "${consul_cluster_tag_value}"
 /opt/vault/bin/run-vault \
-  --tls-cert-file "" \
-  --tls-key-file "" \
+  --tls-cert-file "$VAULT_TLS_CERT_FILE" \
+  --tls-key-file "$VAULT_TLS_KEY_FILE" \
   --enable-auto-unseal \
   --auto-unseal-kms-key-id "${kms_key_id}" \
   --auto-unseal-kms-key-region "${aws_region}"
