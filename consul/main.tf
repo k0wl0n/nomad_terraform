@@ -18,7 +18,7 @@ module "consul_servers" {
 
   cluster_name            = "${var.cluster_name}-server"
   cluster_size            = var.num_servers
-  instance_type           = "m5.large"
+  instance_type           = "t2.micro"
   service_linked_role_arn = aws_iam_service_linked_role.consul_asg_role.arn
 
   cluster_tag_key   = var.cluster_tag_key

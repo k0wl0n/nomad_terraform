@@ -1,0 +1,97 @@
+{
+    "min_packer_version": "1.6.0",
+    "variables": {
+      "aws_region": "us-east-1",
+      "vault_version": "1.4.2",
+      "vault_module_version": " v0.13.7",
+      "consul_module_version": "v0.7.4",
+      "consul_version": "1.8.0",
+      "install_auth_signing_script": "true",
+      "ca_public_key_path": "{{template_dir}}/tls/ca.crt.pem",
+      "tls_public_key_path": "{{template_dir}}/tls/vault.crt.pem",
+      "tls_private_key_path": "{{template_dir}}/tls/vault.key.pem"
+    },
+    "builders": [{
+      "ami_name": "vault-ubuntu18-{{isotime | clean_resource_name}}-{{uuid}}",
+      "ami_description": "An Ubuntu 18.04 AMI that has Vault and Consul installed.",
+      "instance_type": "t2.micro",
+      "name": "ubuntu18-ami",
+      "region": "{{user `aws_region`}}",
+      "type": "amazon-ebs",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "architecture": "x86_64",
+          "name": "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*",
+          "block-device-mapping.volume-type": "gp2",
+          "root-device-type": "ebs"
+        },
+        "owners": ["099720109477"],
+        "most_recent": true
+      },
+      "ssh_username": "ubuntu"
+    }],
+    "provisioners": [{
+      "type": "shell",
+      "inline": [
+        "git clone --branch {{user `vault_module_version`}} https://github.com/hashicorp/terraform-aws-vault.git /tmp/terraform-aws-vault",
+        "/tmp/terraform-aws-vault/modules/install-vault/install-vault --version {{user `vault_version`}}"
+      ]
+      },{
+        "type": "file",
+        "source": "{{template_dir}}/auth/sign-request.py",
+        "destination": "/tmp/sign-request.py"
+      },{
+        "type": "file",
+        "source": "{{user `ca_public_key_path`}}",
+        "destination": "/tmp/ca.crt.pem"
+      },{
+        "type": "file",
+        "source": "{{user `tls_public_key_path`}}",
+        "destination": "/tmp/vault.crt.pem"
+      },{
+        "type": "file",
+        "source": "{{user `tls_private_key_path`}}",
+        "destination": "/tmp/vault.key.pem"
+      },{
+        "type": "shell",
+        "inline": [
+          "if [[ '{{user `install_auth_signing_script`}}' == 'true' ]]; then",
+          "sudo mv /tmp/sign-request.py /opt/vault/scripts/",
+          "else",
+          "sudo rm /tmp/sign-request.py",
+          "fi",
+          "sudo mv /tmp/ca.crt.pem /opt/vault/tls/",
+          "sudo mv /tmp/vault.crt.pem /opt/vault/tls/",
+          "sudo mv /tmp/vault.key.pem /opt/vault/tls/",
+          "sudo chown -R vault:vault /opt/vault/tls/",
+          "sudo chmod -R 600 /opt/vault/tls",
+          "sudo chmod 700 /opt/vault/tls",
+          "sudo /tmp/terraform-aws-vault/modules/update-certificate-store/update-certificate-store --cert-file-path /opt/vault/tls/ca.crt.pem"
+        ],
+        "inline_shebang": "/bin/bash -e"
+      },{
+        "type": "shell",
+        "inline": [
+          "sudo apt-get install -y git",
+          "if [[ '{{user `install_auth_signing_script`}}' == 'true' ]]; then",
+          "sudo apt-get install -y python-pip",
+          "LC_ALL=C && sudo pip install boto3",
+          "fi"
+        ],
+        "inline_shebang": "/bin/bash -e"
+      },{
+      "type": "shell",
+      "inline": [
+        "git clone --branch {{user `consul_module_version`}} https://github.com/hashicorp/terraform-aws-consul.git /tmp/terraform-aws-consul",
+        "/tmp/terraform-aws-consul/modules/install-consul/install-consul --version {{user `consul_version`}}"
+        ],
+      "pause_before": "30s"
+    },{
+      "type": "shell",
+      "inline": [
+        "/tmp/terraform-aws-consul/modules/setup-systemd-resolved/setup-systemd-resolved"
+      ],
+      "pause_before": "30s"
+    }]
+}

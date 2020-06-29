@@ -1,7 +1,7 @@
 variable "ami_id" {
   description = "The ID of the AMI to run in the cluster. Change this to your AMI ID."
   type        = string
-  default     = "ami-0315102b129befb93"
+  default     = "ami-08806ccca706e2156"
 }
 
 variable "cluster_name" {
