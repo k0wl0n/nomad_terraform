@@ -1,7 +1,7 @@
 variable "ami_id" {
   description = "The ID of the AMI to run in the cluster. This should be an AMI built from the Packer template under examples/vault-consul-ami/vault-consul.json."
   type        = string
-  default     = "ami-075ac998fd3ddc379"
+  default     = "ami-078fd09874443a980"
 }
 
 variable "ssh_key_name" {
