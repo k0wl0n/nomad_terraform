@@ -37,7 +37,7 @@ terraform plan
 terraform apply
 ```
 
-## Initialize Vault
+### Initialize Vault
 
 To initialize Vault for the first time, execute the following commands:
 
