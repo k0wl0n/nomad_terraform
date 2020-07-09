@@ -49,6 +49,29 @@ vault operator init -recovery-shares=1 -recovery-threshold=1
 
 **Don't lose your initial root token.**
 
+## Nomad
+
+To build the Nomad AMI, run the following command from the `nomad` directory:
+
+```
+packer build nomad.json
+```
+
+Once the AMI is done building, you can add the AMI ID to the `variables.tf` file and run the following:
+
+```
+terraform init
+terraform plan
+terraform apply
+```
+
+There is a sample job file in the `jobs` directory, you can execute the following to run it:
+
+```
+export NOMAD_ADDR=$NOMAD_ADDR:4646
+nomad job run docs.nomad
+```
+
 ## Questions?
 
 Open an issue.
