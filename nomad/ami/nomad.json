@@ -53,5 +53,4 @@
         "script": "{{template_dir}}/setup_docker.sh"
       }
     ]
-  }
-  
+}
