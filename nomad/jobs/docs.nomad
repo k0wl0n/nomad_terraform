@@ -1,5 +1,5 @@
 job "docs" {
-  datacenters = ["us-east-1a"]
+  datacenters = ["us-east-1a","us-east-1c","us-east-1e"]
 
   group "example" {
     task "server" {

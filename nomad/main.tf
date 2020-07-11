@@ -7,10 +7,6 @@ provider "aws" {
   region  = "us-east-1"
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# DEPLOY THE NOMAD SERVER NODES
-# ---------------------------------------------------------------------------------------------------------------------
-
 module "nomad_servers" {
   source = "github.com/hashicorp/terraform-aws-nomad//modules/nomad-cluster?ref=v0.6.3"
 
