@@ -1,0 +1,5 @@
+AMI CONSUL
+ap-southeast-1: ami-0e832ce851fbcebda
+
+AMI NOMAD
+ap-southeast-1: ami-0a797180123846d55

@@ -1,0 +1,72 @@
+{
+    "min_packer_version": "0.12.0",
+    "variables": {
+        "aws_region": "ap-southeast-1",
+        "nomad_module_version": "v0.10.0",
+        "nomad_version": "1.1.4",
+        "consul_module_version": "v0.11.0",
+        "consul_version": "1.10.2",
+        "ami_name_prefix": "nomad-consul"
+    },
+    "builders": [
+        {
+            "ami_name": "{{user `ami_name_prefix`}}-docker-amazon-linux-2-amd64-{{isotime | clean_resource_name}}",
+            "ami_description": "An Amazon Linux 2 x86_64 AMI that has Nomad, Consul and Docker installed.",
+            "instance_type": "t2.micro",
+            "name": "amazon-linux-2-amd64-ami",
+            "region": "{{user `aws_region`}}",
+            "type": "amazon-ebs",
+            "source_ami_filter": {
+                "filters": {
+                    "virtualization-type": "hvm",
+                    "architecture": "x86_64",
+                    "name": "*amzn2-ami-hvm-*",
+                    "block-device-mapping.volume-type": "gp2",
+                    "root-device-type": "ebs"
+                },
+                "owners": [
+                    "amazon"
+                ],
+                "most_recent": true
+            },
+            "ssh_username": "ec2-user"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sudo yum update -y",
+                "sudo yum install git -y"
+            ],
+            "pause_before": "10s"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "git clone --branch {{user `nomad_module_version`}} https://github.com/hashicorp/terraform-aws-nomad.git /tmp/terraform-aws-nomad",
+                "/tmp/terraform-aws-nomad/modules/install-nomad/install-nomad --version {{user `nomad_version`}}"
+            ],
+            "pause_before": "10s"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "git clone --branch {{user `consul_module_version`}} https://github.com/hashicorp/terraform-aws-consul.git /tmp/terraform-aws-consul",
+                "/tmp/terraform-aws-consul/modules/install-consul/install-consul --version {{user `consul_version`}}"
+            ],
+            "pause_before": "10s"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "/tmp/terraform-aws-consul/modules/install-dnsmasq/install-dnsmasq"
+            ],
+            "pause_before": "10s"
+        },
+        {
+            "type": "shell",
+            "script": "{{template_dir}}/setup_docker-ami.sh"
+        }
+    ]
+}

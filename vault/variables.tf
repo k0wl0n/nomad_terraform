@@ -1,13 +1,13 @@
 variable "ami_id" {
   description = "The ID of the AMI to run in the cluster. This should be an AMI built from the Packer template under examples/vault-consul-ami/vault-consul.json."
   type        = string
-  default     = "ami-0349acb0d19ebbfc7"
+  default     = "ami-0c9ca96bb09cf0004"
 }
 
 variable "ssh_key_name" {
   description = "The name of an EC2 Key Pair that can be used to SSH to the EC2 Instances in this cluster. Set to an empty string to not associate a Key Pair."
   type        = string
-  default     = "alex"
+  default     = "operation-key"
 }
 
 variable "vault_cluster_name" {
@@ -25,7 +25,7 @@ variable "consul_cluster_name" {
 variable "vault_cluster_size" {
   description = "The number of Vault server nodes to deploy. We strongly recommend using 3 or 5."
   type        = number
-  default     = 3
+  default     = 1
 }
 
 variable "vault_instance_type" {

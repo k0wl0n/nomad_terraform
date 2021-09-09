@@ -3,8 +3,8 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 2.0"
-  region  = "us-east-1"
+  version = "~> 2.70.0"
+  region  = "ap-southeast-1"
 }
 
 resource "aws_iam_service_linked_role" "consul_asg_role" {
@@ -14,8 +14,7 @@ resource "aws_iam_service_linked_role" "consul_asg_role" {
 }
 
 module "consul_servers" {
-  source = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.7.4"
-
+  source                  = "github.com/hashicorp/terraform-aws-consul//modules/consul-cluster?ref=v0.11.0"
   cluster_name            = "${var.cluster_name}-server"
   cluster_size            = var.num_servers
   instance_type           = "t2.micro"

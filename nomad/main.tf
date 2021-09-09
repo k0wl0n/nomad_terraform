@@ -3,12 +3,12 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 2.0"
-  region  = "us-east-1"
+  version = "~> 2.70.0"
+  region  = "ap-southeast-1"
 }
 
 module "nomad_servers" {
-  source = "github.com/hashicorp/terraform-aws-nomad//modules/nomad-cluster?ref=v0.6.3"
+  source = "github.com/hashicorp/terraform-aws-nomad//modules/nomad-cluster?ref=v0.10.0"
 
   cluster_name  = "${var.nomad_cluster_name}-server"
   instance_type = "t2.micro"
@@ -30,7 +30,7 @@ module "nomad_servers" {
 }
 
 module "consul_iam_policies_servers" {
-  source = "github.com/hashicorp/terraform-aws-consul//modules/consul-iam-policies?ref=v0.7.4"
+  source = "github.com/hashicorp/terraform-aws-consul//modules/consul-iam-policies?ref=v0.10.0"
 
   iam_role_id = module.nomad_servers.iam_role_id
 }
@@ -46,10 +46,10 @@ data "template_file" "user_data_nomad_server" {
 }
 
 module "nomad_clients" {
-  source = "github.com/hashicorp/terraform-aws-nomad//modules/nomad-cluster?ref=v0.6.3"
+  source = "github.com/hashicorp/terraform-aws-nomad//modules/nomad-cluster?ref=v0.10.0"
 
   cluster_name  = "${var.nomad_cluster_name}-client"
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
 
   cluster_tag_key   = "nomad-clients"
   cluster_tag_value = var.nomad_cluster_name
@@ -74,7 +74,7 @@ module "nomad_clients" {
 }
 
 module "consul_iam_policies_clients" {
-  source = "github.com/hashicorp/terraform-aws-consul//modules/consul-iam-policies?ref=v0.7.4"
+  source = "github.com/hashicorp/terraform-aws-consul//modules/consul-iam-policies?ref=v0.10.0"
 
   iam_role_id = module.nomad_clients.iam_role_id
 }

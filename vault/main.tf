@@ -4,7 +4,7 @@ terraform {
 
 provider "aws" {
   version = "~> 2.0"
-  region  = "us-east-1"
+  region  = "ap-southeast-1"
 }
 
 resource "aws_kms_key" "vault" {
