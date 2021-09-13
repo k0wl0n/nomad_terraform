@@ -23,7 +23,7 @@ module "consul_servers" {
   cluster_tag_key   = var.cluster_tag_key
   cluster_tag_value = var.cluster_name
 
-  ami_id    = var.ami_id
+  ami_id    = "ami-0e6444898cafdd08d"
   user_data = data.template_file.user_data_server.rendered
 
   vpc_id     = data.aws_vpc.default.id

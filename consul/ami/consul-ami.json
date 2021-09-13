@@ -1,7 +1,7 @@
 {
     "min_packer_version": "1.5.4",
     "variables": {
-        "aws_region": "ap-southeast-1",
+        "aws_region": "ap-northeast-1",
         "consul_version": "1.10.2",
         "download_url": "{{env `CONSUL_DOWNLOAD_URL`}}"
     },
@@ -12,6 +12,7 @@
             "ami_description": "An Amazon Linux 2 AMI that has Consul installed.",
             "instance_type": "t2.micro",
             "region": "{{user `aws_region`}}",
+            "associate_public_ip_address": true,
             "type": "amazon-ebs",
             "source_ami_filter": {
                 "filters": {

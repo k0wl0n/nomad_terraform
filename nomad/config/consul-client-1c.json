@@ -1,0 +1,26 @@
+{
+    "advertise_addr": "172.31.40.33",
+    "bind_addr": "172.31.40.33",
+    "client_addr": "0.0.0.0",
+    "datacenter": "ap-southeast-1",
+    "node_name": "i-0dd838dbe7f36d083",
+    "retry_join": [
+        "provider=aws region=ap-southeast-1 tag_key=new-consul-servers tag_value=new-consul"
+    ],
+    "server": false,
+    "autopilot": {
+        "cleanup_dead_servers": true,
+        "last_contact_threshold": "200ms",
+        "max_trailing_logs": 250,
+        "server_stabilization_time": "10s",
+        "redundancy_zone_tag": "az",
+        "disable_upgrade_migration": false,
+        "upgrade_version_tag": ""
+    },
+    "telemetry": {
+        "disable_compat_1.9": true
+    },
+    "ui_config": {
+        "enabled": false
+    }
+}
