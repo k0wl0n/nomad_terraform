@@ -1,0 +1,22 @@
+id = "ceph-mysql-5"
+name = "ceph-mysql-5"
+type = "csi"
+plugin_id = "ceph-csi"
+capacity_max = "3G"
+capacity_min = "1G"
+
+capability {
+  access_mode     = "single-node-writer"
+  attachment_mode = "file-system"
+}
+
+secrets {
+  userID  = "admin"
+  userKey = "AQDDOiZhXzgrDxAAPk7uk82IFl6zjHzrLvyK7g=="  
+}
+
+parameters {
+  clusterID     = "7635de36-ab1f-4a70-98a2-a1bd80ba77c4"
+  pool          = "nomad"
+  imageFeatures = "layering"
+}

@@ -1,0 +1,11 @@
+id = "volume-1b"
+name = "volume-1b"
+type = "csi"
+plugin_id = "aws-ebs-1b"
+capacity_max = "2G"
+capacity_min = "1G"
+
+capability {
+  access_mode     = "single-node-writer"
+  attachment_mode = "file-system"
+}

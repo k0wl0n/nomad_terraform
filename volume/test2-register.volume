@@ -1,0 +1,12 @@
+id = "volumec"
+name = "volumec"
+type = "csi"
+external_id="vol-083a2ae66e103e573"
+plugin_id = "aws-ebs0"
+capacity_max = "2G"
+capacity_min = "1G"
+
+capability {
+  access_mode     = "single-node-writer"
+  attachment_mode = "file-system"
+}
